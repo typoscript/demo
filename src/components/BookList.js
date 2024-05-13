@@ -4,7 +4,7 @@ const BookList = () => {
     const [books, setBooks] = useState([]);
     const [bookNumber, setBookNumber] = useState(1);
     const [query, setQuery] = useState("");
-    const bookNumberCount = useRef(1);
+    const pageCount = useRef(1);
 
     const fetchBooksByQuery = async () => {
         const response = await fetch(
