@@ -82,26 +82,22 @@ const VideoList = (props) => {
                 <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
                 <Button bg="pink" onClick={handleSearchClick}>검색</Button>
             </Flex>
-            <Box padding="10px">
+            <Flex padding="10px" direction="row" flexWrap="wrap">
                 {videos.map((video, index) => (
-                    <Box borderRadius="10px" p="10px" _hover={{"background-color": "pink"}}>
-                        {((page - 1) * 10) + index + 1}
-
-                        <Box fontSize="lg" p="10px">
-                            <a href={video.url}>
-                                <Flex gap="10px" align="center">
-                                    <Image borderRadius="10px" boxSize="150px" src={video.thumbnail} />
-                                    <Flex direction="column" gap="10px">
-                                        <Text fontSize="20px">{video.title}</Text>
-                                        <Text fontSize="15px">{video.author}</Text>
-                                        <Text fontSize="15px">{video.datetime.split("T")[0]}</Text>
-                                    </Flex>
+                    <Box borderRadius="10px" width="50%" p="10px" _hover={{"background-color": "pink"}}>
+                        <a href={video.url}>
+                            <Flex gap="10px" align="center">
+                                <Image borderRadius="10px" boxSize="150px" src={video.thumbnail} />
+                                <Flex direction="column" gap="10px">
+                                    <Text fontSize="20px">{video.title}</Text>
+                                    <Text fontSize="15px">{video.author}</Text>
+                                    <Text fontSize="15px">{video.datetime.split("T")[0]}</Text>
                                 </Flex>
-                            </a>
-                        </Box>
+                            </Flex>
+                        </a>
                     </Box>
                 ))}
-            </Box>
+            </Flex>
         </Flex>
         <HStack justify="center">
             {Array.from({length: pageCount.current}, (_, index) => (

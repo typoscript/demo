@@ -3,7 +3,6 @@ import BookList from "./components/BookList";
 import VideoList from "./components/VideoList";
 import Home from "./components/Home";
 
-
 import { createBrowserRouter } from "react-router-dom";
 
 /*
@@ -37,7 +36,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/video",
-                element: (<VideoList type={"recommandation"} />)
+                element: <VideoList type={"recommandation"} />
             },
             {
                 path: "/video/list",
