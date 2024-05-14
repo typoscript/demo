@@ -28,14 +28,6 @@ const router = createBrowserRouter([
                 path: "/",
                 element: <Home />
             },
-            {
-                path: "/video",
-                element: <VideoList type={"recommandation"} />
-            },
-            {
-                path: "/book",
-                element: <BookList type={"recommandation"} />
-            },
         ],
         errorElement: <>404 에러 페이지</>
     },
@@ -43,6 +35,10 @@ const router = createBrowserRouter([
         path: "/video",
         element: <Root />,
         children: [
+            {
+                path: "/video",
+                element: <VideoList type={"recommandation"} />
+            },
             {
                 path: "/video/list",
                 element: <VideoList type={"list"} />
@@ -57,6 +53,10 @@ const router = createBrowserRouter([
         path: "/book",
         element: <Root />,
         children: [
+            {
+                path: "/book",
+                element: <BookList type={"recommandation"} />
+            },
             {
                 path: "/book/list",
                 element: <BookList type={"list"} />
