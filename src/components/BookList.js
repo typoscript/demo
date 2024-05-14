@@ -1,104 +1,91 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import { IconButton, Heading, Box, Input, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td, Button, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import { RxVideo } from "react-icons/rx";
+import { MdOutlineDarkMode, MdDarkMode} from "react-icons/md";
 
 const BookList = () => {
-    const [books, setBooks] = useState([]);
-    const [bookNumber, setBookNumber] = useState(1);
-    const [query, setQuery] = useState("");
+    // useState 는 화면 랜더링에 반영됨
+    const [bookList, setBookList] = useState([]);
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState('달고나 커피');
+
+  // useRef 는 화면 랜더링 반영되지 않는 참조값
     const pageCount = useRef(1);
 
-    const fetchBooksByQuery = async () => {
-        const response = await fetch(
-            `https://freetestapi.com/api/v1/books?search=${query}`,
-            {
-                mode: 'cors',
-                method: "GET",
-            }
-        );
-
-        const data = await response.json();
-
-        setBooks(data);
-    };
+    const { colorMode, toggleColorMode } = useColorMode();
+    const color = useColorModeValue("gray.500", "red.300");
 
     const fetchBooks = async () => {
-        const response = await fetch(
-            `https://freetestapi.com/api/v1/books/${bookNumber}`,
-            {
-                mode: 'cors',
-                method: "GET",
-            }
-        );
-
-        const data = await response.json();
-
-        setBooks(data);
-    };
-
-    const handleNextBook = () => {
-        setBookNumber(bookNumber + 1);
-    };
-
-    const handlePrevBook = () => {
-        if (bookNumber - 1 > 0)
-            setBookNumber(bookNumber - 1);
-    };
-
-    const handleQueryChange = (e) => {
-        setQuery(e.target.value);
-    };
-
-    useEffect(() => {
-        fetchBooks();
-    }, [bookNumber]);
-
-
-    const getPages = (length) => {
-        const pages = [];
-
-        for (let i = 0; i < length; i++) {
-            pages.push(
-                <ul>
-                    <li onClick={() => setBookNumber(i)}>{i + 1}</li>
-                </ul>
-            );
+    const response = await fetch(
+        `https://dapi.kakao.com/v2/search/vclip?1query=${search}&page=${page}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `KakaoAK ${process.env.REACT_APP_API_KEY}`,
+            },
         }
+    );
 
-        return pages
+    const data = await response.json();
+
+    if (data.meta) {
+        pageCount.current =
+        data.meta.pageable_count % 10 > 0
+            ? data.meta.pageable_count / 10 + 1
+            : data.meta.pageable_count / 10;
+
+        pageCount.current = Math.floor(pageCount.current);
+        pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
+        console.log(pageCount.current);
+
+        setBookList(data.documents);
+    }
+    };
+
+    const changeSearch = e => {
+    if (e.target.value.length >= 2) 
+        setSearch(e.target.value); 
     }
 
-    return (
-        <>
-            <h1>도서 목록</h1>
-            <p>페이지: {bookNumber}</p>
-            <div>
-                <span>검색</span>
-                <input type="text" onChange={handleQueryChange} />
-                <button onClick={fetchBooksByQuery}>도서 검색</button>
-            </div>
-            <button onClick={handlePrevBook}>이전 도서</button>
-            <button onClick={handleNextBook}>다음 도서</button>
-            <div>
-                {
-                    Array.isArray(books) ? getPages(books.length).map(page => {
-                        return page;
-                    }) : <></>
-                }
+    useEffect(() => {
+    fetchBooks();
+    }, [page, search]);
 
-                {Array.isArray(books) ? books.map((book, idx) => {
-                    return (
-                        <>
-                            <p>{book.title}</p>
-                        </>
-                    )
-                    })
-                    :
-                    <>
-                        <p>{books.title}</p>
-                    </>
-                } 
-            </div>
-        </>
+    return (
+    <>
+        <Box>
+            <Heading color={color}><RxVideo/> 동영상 검색 목록</Heading>
+            <IconButton icon={colorMode === 'dark' ? <MdDarkMode/> : <MdOutlineDarkMode/>} onClick={toggleColorMode}></IconButton>
+            <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
+            <TableContainer>
+                <Table variant="striped">
+                    <Thead>
+                        <Tr>
+                            <Th>No</Th>
+                            <Th>Title</Th>
+                            <Th>URL</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {bookList.map((book, index) => (
+                            <Tr>
+                                <Td>{page - 1 + 10 + index + 1}</Td>
+                                <Td>{book.title}</Td>
+                                <Td><a href={book.url}>{book.url}</a></Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                    <Tfoot></Tfoot>
+                </Table>
+            </TableContainer>
+        </Box>
+        <HStack>
+            {Array.from({length: pageCount.current}, (_, index) => (
+                <Button colorScheme={page === index + 1 ? "pink" : color} onClick={e => { setPage(index + 1) }}>{index + 1}</Button>
+            ))}
+        </HStack>
+    </>
     );
-}
+};
 
 export default BookList;
