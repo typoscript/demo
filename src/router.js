@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/video",
-                element: <VideoList type={"recommandation"} />
+                element: (<VideoList type={"recommandation"} />)
             },
             {
                 path: "/video/list",

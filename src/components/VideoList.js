@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Flex, Heading, Image, Box, Input, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td, Button, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Text, Heading, Image, Box, Input, Button, HStack, useColorModeValue } from '@chakra-ui/react'
 
 const VideoList = (props) => {
     // useState 는 화면 랜더링에 반영됨
@@ -82,34 +82,28 @@ const VideoList = (props) => {
                 <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
                 <Button bg="pink" onClick={handleSearchClick}>검색</Button>
             </Flex>
-            <TableContainer>
-                <Table variant="striped">
-                    <Thead>
-                        <Tr>
-                            <Th>No</Th>
-                            <Th>Title</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {videos.map((video, index) => (
-                            <Tr>
-                                <Td>{((page - 1) * 10) + index + 1}</Td>
-                                <Td>
-                                    <Box fontSize="lg" p="10px">
-                                    <a href={video.url}>
-                                        <Image boxSize="150px" src={video.thumbnail} />
-                                        {video.title}
-                                    </a>
-                                    </Box>
-                                </Td>
-                            </Tr>
-                        ))}
-                    </Tbody>
-                    <Tfoot></Tfoot>
-                </Table>
-            </TableContainer>
+            <Box padding="10px">
+                {videos.map((video, index) => (
+                    <Box borderRadius="10px" p="10px" _hover={{"background-color": "pink"}}>
+                        {((page - 1) * 10) + index + 1}
+
+                        <Box fontSize="lg" p="10px">
+                            <a href={video.url}>
+                                <Flex gap="10px" align="center">
+                                    <Image borderRadius="10px" boxSize="150px" src={video.thumbnail} />
+                                    <Flex direction="column" gap="10px">
+                                        <Text fontSize="20px">{video.title}</Text>
+                                        <Text fontSize="15px">{video.author}</Text>
+                                        <Text fontSize="15px">{video.datetime.split("T")[0]}</Text>
+                                    </Flex>
+                                </Flex>
+                            </a>
+                        </Box>
+                    </Box>
+                ))}
+            </Box>
         </Flex>
-        <HStack>
+        <HStack justify="center">
             {Array.from({length: pageCount.current}, (_, index) => (
                 <Button color={page === index + 1 ? "pink" : color} onClick={e => { setPage(index + 1) }}>{index + 1}</Button>
             ))}

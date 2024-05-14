@@ -82,34 +82,24 @@ const BookList = (props) => {
                 <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
                 <Button bg="pink" onClick={handleSearchClick}>검색</Button>
             </Flex>
-            <TableContainer>
-                <Table variant="striped">
-                    <Thead>
-                        <Tr>
-                            <Th>No</Th>
-                            <Th>Title</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {books.map((book, index) => (
-                            <Tr>
-                                <Td>{((page - 1) * 10) + index + 1}</Td>
-                                <Td>
-                                    <Box fontSize='lg'>
-                                        <a href={book.url}>
-                                            <Image boxSize="150px" src={book.thumbnail} />
-                                            {book.title}
-                                        </a>
-                                    </Box>
-                                </Td>
-                            </Tr>
-                        ))}
-                    </Tbody>
-                    <Tfoot></Tfoot>
-                </Table>
-            </TableContainer>
         </Flex>
-        <HStack>
+        <Box padding="10px">
+            {books.map((book, index) => (
+                <Box borderRadius="10px" p="10px" _hover={{"background-color": "pink"}}>
+                    {((page - 1) * 10) + index + 1}
+
+                    <Box fontSize="lg" p="10px">
+                        <a href={book.url}>
+                            <Flex gap="10px" align="center">
+                                <Image borderRadius="10px" boxSize="150px" src={book.thumbnail} />
+                                {book.title}
+                            </Flex>
+                        </a>
+                    </Box>
+                </Box>
+            ))}
+        </Box>
+        <HStack justify="center">
             {Array.from({length: pageCount.current}, (_, index) => (
                 <Button color={page === index + 1 ? "pink" : color} onClick={e => { setPage(index + 1) }}>{index + 1}</Button>
             ))}
