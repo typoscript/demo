@@ -40,7 +40,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/video/list",
-                element: <VideoList type={"list"} />
+                element: <h1>dsfdsf</h1>
             },
             {
                 path: "/video/search",

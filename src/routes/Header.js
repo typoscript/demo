@@ -2,6 +2,7 @@ import { Flex, useColorModeValue, Heading, useColorMode, Button, IconButton, Men
 import { MdOutlineDarkMode, MdDarkMode} from "react-icons/md";
 import { RxVideo } from "react-icons/rx";
 import { GrBook } from "react-icons/gr";
+import { Link } from "react-router-dom";
  
 const Header = () => {
     const { colorMode, toggleColorMode } = useColorMode();
@@ -17,7 +18,7 @@ const Header = () => {
                     <Menu>
                         <MenuButton as={Button}><RxVideo/> 영상</MenuButton>
                         <MenuList>
-                            <MenuItem as="a" href="/demo/video">추천 영상</MenuItem>
+                            <MenuItem><Link to="/video">추천 영상</Link></MenuItem>
                             <MenuItem as="a" href="/demo/video/list">영상 목록</MenuItem>
                             <MenuItem as="a" href="/demo/video/search">영상 검색</MenuItem>
                         </MenuList>
