@@ -1,45 +1,53 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Heading, Box, Input, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td, Button, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react'
-import { RxVideo } from "react-icons/rx";
-import { MdOutlineDarkMode, MdDarkMode} from "react-icons/md";
+import { Flex, Heading, Image, Box, Input, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td, Button, HStack, useColorModeValue } from '@chakra-ui/react'
 
-const BookList = () => {
+const BookList = (props) => {
     // useState 는 화면 랜더링에 반영됨
-    const [bookList, setBookList] = useState([]);
+    const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('달고나 커피');
+    const [search, setSearch] = useState(getDefaultSearch());
 
   // useRef 는 화면 랜더링 반영되지 않는 참조값
     const pageCount = useRef(1);
 
-    const { colorMode, toggleColorMode } = useColorMode();
     const color = useColorModeValue("gray.500", "red.300");
 
-    const fetchBooks = async () => {
-    const response = await fetch(
-        `https://dapi.kakao.com/v2/search/vclip?1query=${search}&page=${page}`,
-        {
-            method: "GET",
-            headers: {
-                Authorization: `KakaoAK ${process.env.REACT_APP_API_KEY}`,
-            },
-        }
-    );
+    function getDefaultSearch() {
+        const DEFAULT_SEARCH = "경제";
 
-    const data = await response.json();
+        if (props.type === "search")
+            return "";
 
-    if (data.meta) {
-        pageCount.current =
-        data.meta.pageable_count % 10 > 0
-            ? data.meta.pageable_count / 10 + 1
-            : data.meta.pageable_count / 10;
-
-        pageCount.current = Math.floor(pageCount.current);
-        pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
-        console.log(pageCount.current);
-
-        setBookList(data.documents);
+        return DEFAULT_SEARCH;
     }
+
+    const fetchBooks = async () => {
+        if (!search)
+            return;
+
+        const response = await fetch(
+            `https://dapi.kakao.com/v3/search/book?query=${search}&page=${page}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `KakaoAK ${process.env.REACT_APP_API_KEY}`,
+                },
+            }
+        );
+
+        const data = await response.json();
+
+        if (data.meta) {
+            pageCount.current =
+            data.meta.pageable_count % 10 > 0
+                ? data.meta.pageable_count / 10 + 1
+                : data.meta.pageable_count / 10;
+
+            pageCount.current = Math.floor(pageCount.current);
+            pageCount.current = pageCount.current > 15 ? 15 : pageCount.current;
+
+            setBooks(data.documents);
+        }
     };
 
     const changeSearch = e => {
@@ -47,44 +55,66 @@ const BookList = () => {
         setSearch(e.target.value); 
     }
 
+    const getHeadingText = () => {
+        switch (props.type) {
+            case "recommandation":
+                return "추천 책 목록";
+            case "list":
+                return "책 목록";
+            case "search":
+                return `${search} 책 검색 목록`;
+        }
+    }
+
+    const handleSearchClick = () => {
+        fetchBooks();
+    }
+
     useEffect(() => {
-    fetchBooks();
-    }, [page, search]);
+        fetchBooks();
+    }, [page]);
 
     return (
-    <>
-        <Box>
-            <Heading color={color}><RxVideo/> 동영상 검색 목록</Heading>
-            <IconButton icon={colorMode === 'dark' ? <MdDarkMode/> : <MdOutlineDarkMode/>} onClick={toggleColorMode}></IconButton>
-            <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
+    <Flex justify="center" padding="30px" direction="column">
+        <Flex direction="column" gap="10px">
+            <Heading color={color}>{getHeadingText()}</Heading>
+            <Flex>
+                <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
+                <Button bg="pink" onClick={handleSearchClick}>검색</Button>
+            </Flex>
             <TableContainer>
                 <Table variant="striped">
                     <Thead>
                         <Tr>
                             <Th>No</Th>
                             <Th>Title</Th>
-                            <Th>URL</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {bookList.map((book, index) => (
+                        {books.map((book, index) => (
                             <Tr>
-                                <Td>{page - 1 + 10 + index + 1}</Td>
-                                <Td>{book.title}</Td>
-                                <Td><a href={book.url}>{book.url}</a></Td>
+                                <Td>{((page - 1) * 10) + index + 1}</Td>
+                                <Td>
+                                    <Box fontSize='lg'>
+                                        <a href={book.url}>
+                                            <Image boxSize="150px" src={book.thumbnail} />
+                                            {book.title}
+                                        </a>
+                                    </Box>
+                                </Td>
                             </Tr>
                         ))}
                     </Tbody>
                     <Tfoot></Tfoot>
                 </Table>
             </TableContainer>
-        </Box>
+        </Flex>
         <HStack>
             {Array.from({length: pageCount.current}, (_, index) => (
-                <Button colorScheme={page === index + 1 ? "pink" : color} onClick={e => { setPage(index + 1) }}>{index + 1}</Button>
+                <Button color={page === index + 1 ? "pink" : color} onClick={e => { setPage(index + 1) }}>{index + 1}</Button>
             ))}
         </HStack>
-    </>
+    </Flex>
     );
 };
 
