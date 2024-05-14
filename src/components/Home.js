@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { RxVideo } from "react-icons/rx";
+import { GrBook } from "react-icons/gr";
+import { Flex, Text } from '@chakra-ui/react'
 
-const Home = (props) => {
-    const [count, setCount] = useState(1);
-
-    const handleClick = () => {
-        setCount(count + 1);
-    }
-
+const Home = () => {
     return (
-        <>
-            <button onClick={handleClick} style={props.style}>{count}</button>
-        </>
+        <Flex justify="center" align="center">
+            <a href="/demo/video/list">
+                <RxVideo size="300px" />
+            </a>
+            <a href="/demo/book/list">
+                <GrBook size="300px" />
+            </a>
+        </Flex>
     );
 }
 
