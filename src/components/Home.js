@@ -1,6 +1,6 @@
 import { RxVideo } from "react-icons/rx";
 import { GrBook } from "react-icons/gr";
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 
 const Home = () => {
     return (
