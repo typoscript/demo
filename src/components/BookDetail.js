@@ -8,6 +8,7 @@ const BookDetail = () => {
     //const [params] = useSearchParams();
 
     //console.log(params.get("name"))
+    console.log(isbn);
 
     const color = useColorModeValue("gray.500", "red.300");
 
