@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Flex, Heading, Image, Box, Input, TableContainer, Table, Thead, Tbody, Tfoot, Tr, Th, Td, Button, HStack, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Heading, Image, Box, Input, useColorModeValue, Button, HStack } from '@chakra-ui/react'
+import { Link } from "react-router-dom";
 
 const BookList = (props) => {
     // useState 는 화면 랜더링에 반영됨
@@ -80,21 +81,19 @@ const BookList = (props) => {
             <Heading color={color}>{getHeadingText()}</Heading>
             <Flex>
                 <Input type="text" placeholder="검색어 입력" onChange={changeSearch} />
-                <Button bg="pink" onClick={handleSearchClick}>검색</Button>
+                <Button backgroundColor="pink" onClick={handleSearchClick}>검색</Button>
             </Flex>
         </Flex>
         <Box padding="10px">
-            {books.map((book, index) => (
+            {books.map(book => (
                 <Box borderRadius="10px" p="10px" _hover={{"background-color": "pink"}}>
-                    {((page - 1) * 10) + index + 1}
-
                     <Box fontSize="lg" p="10px">
-                        <a href={book.url}>
+                        <Link to={`/book/search/${book.isbn.split(" ")[0]}`}>
                             <Flex gap="10px" align="center">
                                 <Image borderRadius="10px" boxSize="150px" src={book.thumbnail} />
                                 {book.title}
                             </Flex>
-                        </a>
+                        </Link>
                     </Box>
                 </Box>
             ))}
