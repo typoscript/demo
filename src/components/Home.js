@@ -1,16 +1,21 @@
 import { RxVideo } from "react-icons/rx";
 import { GrBook } from "react-icons/gr";
-import { Flex } from '@chakra-ui/react'
+import { Flex, Box } from '@chakra-ui/react'
+import { Link } from "react-router-dom";
 
 const Home = () => {
     return (
         <Flex justify="center" align="center">
-            <a href="/demo/video/list">
-                <RxVideo size="300px" />
-            </a>
-            <a href="/demo/book/list">
-                <GrBook size="300px" />
-            </a>
+            <Box flexBasis="200px" flexShrink="3">
+                <Link to="/video/list" >
+                   <RxVideo size="100%" />
+                </Link>
+            </Box>
+            <Box flexBasis="200px" flexShrink="3">
+                <Link to="/book/list">
+                    <GrBook size="100%" />
+                </Link>
+            </Box>
         </Flex>
     );
 }

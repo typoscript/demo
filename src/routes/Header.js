@@ -19,17 +19,17 @@ const Header = () => {
                         <MenuButton as={Button}><RxVideo/> 영상</MenuButton>
                         <MenuList>
                             <MenuItem><Link to="/video">추천 영상</Link></MenuItem>
-                            <MenuItem as="a" href="/demo/video/list">영상 목록</MenuItem>
-                            <MenuItem as="a" href="/demo/video/search">영상 검색</MenuItem>
+                            <MenuItem><Link to="/video/list">영상 목록</Link></MenuItem>
+                            <MenuItem><Link to="/video/search">영상 검색</Link></MenuItem>
                         </MenuList>
                     </Menu>
 
                     <Menu>
                         <MenuButton as={Button}><GrBook /> 책</MenuButton>
                         <MenuList>
-                            <MenuItem as="a" href="/demo/book">추천 책</MenuItem>
-                            <MenuItem as="a" href="/demo/book/list">책 목록</MenuItem>
-                            <MenuItem as="a" href="/demo/book/search">책 검색</MenuItem>
+                            <MenuItem><Link to="/book">추천 책</Link></MenuItem>
+                            <MenuItem><Link to="/book/list">책 목록</Link></MenuItem>
+                            <MenuItem><Link to="/book/search">책 검색</Link></MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>
