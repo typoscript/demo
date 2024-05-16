@@ -3,6 +3,7 @@ import BookList from "./components/BookList";
 import BookDetail from "./components/BookDetail";
 import VideoList from "./components/VideoList";
 import Home from "./components/Home";
+import Chakra from "./components/Chakra";
 
 import { createBrowserRouter } from "react-router-dom";
 
@@ -30,6 +31,16 @@ const router = createBrowserRouter([
             },
         ],
         errorElement: <>404 에러 페이지</>
+    },
+    {
+        path: "/chakra",
+        element: <Chakra />,
+        children: [
+            {
+                path: "/chakra",
+                element: <Chakra />,
+            },
+        ],
     },
     {
         path: "/video",
