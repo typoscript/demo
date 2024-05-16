@@ -1,5 +1,6 @@
 import Root from "./routes/Root";
 import BookList from "./components/BookList";
+import BookDetail from "./components/BookDetail";
 import VideoList from "./components/VideoList";
 import Home from "./components/Home";
 
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
             {
                 path: "/book/search",
                 element: <BookList type={"search"} />
+            },
+            {
+                path: "/book/search/:isbn",
+                element: <BookDetail />
             },
         ],
     },
