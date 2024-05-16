@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Flex, Text, Heading, Image, Box, Input, Button, HStack, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Link, Text, Heading, Image, Box, Input, Button, HStack, useColorModeValue } from '@chakra-ui/react'
 
 const VideoList = (props) => {
     // useState 는 화면 랜더링에 반영됨
@@ -83,9 +83,9 @@ const VideoList = (props) => {
                 <Button bg="pink" onClick={handleSearchClick}>검색</Button>
             </Flex>
             <Flex padding="10px" direction="row" flexWrap="wrap">
-                {videos.map((video, index) => (
+                {videos.map(video => (
                     <Box borderRadius="10px" width="50%" p="10px" _hover={{"background-color": "pink"}}>
-                        <a href={video.url}>
+                        <Link to={video.url}>
                             <Flex gap="10px" align="center">
                                 <Image borderRadius="10px" boxSize="150px" src={video.thumbnail} />
                                 <Flex direction="column" gap="10px">
@@ -94,7 +94,7 @@ const VideoList = (props) => {
                                     <Text fontSize="15px">{video.datetime.split("T")[0]}</Text>
                                 </Flex>
                             </Flex>
-                        </a>
+                        </Link>
                     </Box>
                 ))}
             </Flex>
